@@ -9,10 +9,11 @@ const startServer = async () => {
 
     // Start Express server
     app.listen(config.port, () => {
+      // eslint-disable-next-line no-console
       console.log(`Server running on port: ${config.port}`)
     })
   } catch (error) {
-    // Log if unable to connect to database
+    // eslint-disable-next-line no-console
     console.error('Error starting server:', error)
   }
 }
