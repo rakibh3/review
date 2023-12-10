@@ -1,11 +1,11 @@
 import { Types } from 'mongoose'
 
-type TTag = {
+export type TTag = {
   name: string
   isDeleted: boolean
 }
 
-type TDetails = {
+export type TDetails = {
   level: string
   description: string
 }
