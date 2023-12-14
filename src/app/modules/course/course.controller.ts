@@ -4,6 +4,8 @@ import { sendResponse } from '../../utils/sendResponse'
 import httpStatus from 'http-status'
 import { calculateDurationInWeeks } from '../../utils/calculateDurationInWeeks'
 
+//  Creates a new course.
+
 const createCourse = async (
   req: Request,
   res: Response,
