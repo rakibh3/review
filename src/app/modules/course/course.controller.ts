@@ -5,7 +5,6 @@ import httpStatus from 'http-status'
 import { calculateDurationInWeeks } from '../../utils/calculateDurationInWeeks'
 
 //  Creates a new course.
-
 const createCourse = async (
   req: Request,
   res: Response,
@@ -42,14 +41,18 @@ const getAllCourse = async (
   next: NextFunction,
 ) => {
   try {
-    const { ...queryParams } = req.query
-    const allCourse = await CourseServices.getAllCourseFromDatabase(queryParams)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const query = req.query
+
+    const { metaData, courses } =
+      await CourseServices.getAllCourseFromDatabase(query)
 
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
       message: 'Courses retrieved successfully',
-      data: allCourse,
+      meta: metaData,
+      data: courses,
     })
   } catch (error) {
     next(error)
