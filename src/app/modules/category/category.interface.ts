@@ -1,3 +1,3 @@
-export type Category = {
+export type TCategory = {
   name: string
 }
