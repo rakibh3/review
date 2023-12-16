@@ -3,6 +3,7 @@
 import { NextFunction, Request, Response } from 'express'
 import httpStatus from 'http-status'
 import { sendResponse } from '../../utils/sendResponse'
+import { CategoryServices } from './category.service'
 
 const createCategory = async (
   req: Request,
@@ -10,7 +11,7 @@ const createCategory = async (
   next: NextFunction,
 ) => {
   try {
-    const { name } = req.body
+    const { ...name } = req.body
     const result = await CategoryServices.createCategoryIntoDatabase(name)
     sendResponse(res, {
       success: true,
@@ -23,6 +24,6 @@ const createCategory = async (
   }
 }
 
-const CategoryController = {
+export const CategoryController = {
   createCategory,
 }
