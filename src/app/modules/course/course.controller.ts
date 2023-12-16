@@ -4,7 +4,7 @@ import { sendResponse } from '../../utils/sendResponse'
 import httpStatus from 'http-status'
 import { calculateDurationInWeeks } from '../../utils/calculateDurationInWeeks'
 
-//  Creates a new course.
+//  Creates a new course
 const createCourse = async (
   req: Request,
   res: Response,
@@ -35,6 +35,7 @@ const createCourse = async (
   }
 }
 
+// Gets all courses
 const getAllCourse = async (
   req: Request,
   res: Response,
@@ -59,6 +60,7 @@ const getAllCourse = async (
   }
 }
 
+// Exports all controllers
 export const CourseController = {
   createCourse,
   getAllCourse,
