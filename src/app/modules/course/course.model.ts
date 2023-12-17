@@ -20,7 +20,7 @@ const DetailsSchema = new Schema<TDetails>(
 // Creating Mongoose schema
 const courseSchema = new Schema<TCourse>({
   title: { type: String, required: true }, // need to add  unique: true
-  instructor: { type: String, required: true },
+  instructor: { type: String, required: true, ref: 'Category' },
   categoryId: { type: Schema.Types.ObjectId, required: true },
   price: { type: Number, required: true },
   tags: { type: [TagSchema], required: true },
