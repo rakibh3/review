@@ -60,8 +60,46 @@ const getAllCourse = async (
   }
 }
 
+// Get best courses based on reviews rating average
+const getBestCourses = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const result = await CourseServices.getBestCoursesFromDatabase()
+    const bestCourse = result[0] || {}
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: 'Best course retrieved successfully',
+      data: {
+        course: {
+          _id: bestCourse._id,
+          title: bestCourse.title,
+          instructor: bestCourse.instructor,
+          categoryId: bestCourse.categoryId,
+          price: bestCourse.price,
+          tags: bestCourse.tags,
+          startDate: bestCourse.startDate,
+          endDate: bestCourse.endDate,
+          language: bestCourse.language,
+          provider: bestCourse.provider,
+          durationInWeeks: bestCourse.durationInWeeks,
+          details: bestCourse.details,
+        },
+        averageRating: bestCourse.averageRating,
+        reviewCount: bestCourse.reviewCount,
+      },
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
 // Exports all controllers
 export const CourseController = {
   createCourse,
   getAllCourse,
+  getBestCourses,
 }

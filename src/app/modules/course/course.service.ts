@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { filterByUtils } from '../../utils/filter'
 import { sortByUtils, sortOrderUtils } from '../../utils/sort'
+// import { Review } from '../review/review.model'
 import { TCourse } from './course.interface'
 import { Course } from './course.model'
 
@@ -37,8 +38,39 @@ const getAllCourseFromDatabase = async (query: Record<string, any>) => {
   }
 }
 
+// Gets the best courses from the database
+const getBestCoursesFromDatabase = async () => {
+  const courses = await Course.aggregate([
+    {
+      $lookup: {
+        from: 'reviews',
+        localField: '_id',
+        foreignField: 'courseId',
+        as: 'reviews',
+      },
+    },
+    {
+      $addFields: {
+        reviewCount: { $size: '$reviews' },
+        averageRating: { $avg: '$reviews.rating' },
+      },
+    },
+
+    { $sort: { averageRating: -1 } },
+    { $limit: 1 },
+    {
+      $project: {
+        __v: 0,
+        reviews: 0,
+      },
+    },
+  ])
+  return courses
+}
+
 // Exports the course services
 export const CourseServices = {
   createCourseIntoDatabase,
   getAllCourseFromDatabase,
+  getBestCoursesFromDatabase,
 }
