@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose'
 import { TReview } from './review.interface'
 
 const reviewSchema = new Schema<TReview>({
-  courseId: { type: String, required: true },
+  courseId: { type: String, required: true, ref: 'Course' },
   review: { type: String, required: true },
   rating: { type: Number, required: true },
 })
