@@ -97,9 +97,30 @@ const getBestCourses = async (
   }
 }
 
+// Update a course dynamiclly
+const updateCourse = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const courseId = req.params.courseId
+    const result = await CourseServices.updateCourseIntoDatabase(courseId)
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: 'Course updated successfully',
+      data: result,
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
 // Exports all controllers
 export const CourseController = {
   createCourse,
   getAllCourse,
   getBestCourses,
+  updateCourse,
 }

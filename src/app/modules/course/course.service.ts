@@ -68,9 +68,16 @@ const getBestCoursesFromDatabase = async () => {
   return courses
 }
 
+// Updates a course into the database
+const updateCourseIntoDatabase = async (courseId: string) => {
+  const result = await Course.findByIdAndUpdate(courseId)
+  return result
+}
+
 // Exports the course services
 export const CourseServices = {
   createCourseIntoDatabase,
   getAllCourseFromDatabase,
   getBestCoursesFromDatabase,
+  updateCourseIntoDatabase,
 }
