@@ -104,8 +104,13 @@ const updateCourse = async (
   next: NextFunction,
 ) => {
   try {
-    const courseId = req.params.courseId
-    const result = await CourseServices.updateCourseIntoDatabase(courseId)
+    const { courseId } = req.params
+    const upatingData = req.body
+    const result = await CourseServices.updateCourseIntoDatabase(
+      courseId,
+      upatingData,
+    )
+
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
