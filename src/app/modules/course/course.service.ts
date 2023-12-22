@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { filterByUtils } from '../../utils/filter'
 import { sortByUtils, sortOrderUtils } from '../../utils/sort'
+import { ITag, updateTags } from '../../utils/tags'
 import { TCourse } from './course.interface'
 import { Course } from './course.model'
 
@@ -78,63 +79,26 @@ const updateCourseIntoDatabase = async (
     ...remainingCourseData,
   }
 
-  // if (tags && Object.keys(tags).length) {
-  //   for (const [key, value] of Object.entries(tags)) {
-  //     modifiedData[`tags.${key}`] = value
-  //   }
-  // }
-
-  // if (tags) {
-  //   const course = await Course.findById(courseId)
-  //   if (!course) {
-  //     throw new Error('Course not found')
-  //   }
-
-  //   const updatedTags = course.tags.filter(
-  //     (tag) => !tags.some((newTag) => newTag.name === tag.name),
-  //   )
-
-  //   modifiedData['tags'] = updatedTags
-
-  //   for (const newTag of tags) {
-  //     if (!course.tags.find((tag) => tag.name === newTag.name)) {
-  //       updatedTags.push(newTag)
-  //     }
-  //   }
-  // }
-
+  // Tags are update dynamically
   if (tags) {
     const course = await Course.findById(courseId)
+    const courseTag: ITag[] = course?.tags || []
 
-    if (!course) {
-      throw new Error('Course not found')
-    }
-
-    const newTags = course.tags.filter(
-      (tag) => !tags.some((t) => t.name === tag.name && t.isDeleted),
-    )
-
-    tags.forEach((tag) => {
-      if (!tag.isDeleted) {
-        newTags.push(tag)
-      }
-    })
-
-    course.tags = newTags
-
-    await course.save()
+    const updatedTags = updateTags(courseTag, { tags })
+    await Course.findByIdAndUpdate(courseId, { tags: updatedTags })
   }
 
+  // Details update dynamically
   if (details && Object.keys(details).length) {
     for (const [key, value] of Object.entries(details)) {
       modifiedData[`details.${key}`] = value
     }
   }
-  console.log(modifiedData)
 
   const result = await Course.findByIdAndUpdate(courseId, modifiedData, {
     new: true,
   })
+
   return result
 }
 
