@@ -85,7 +85,7 @@ const updateCourseIntoDatabase = async (
     const courseTag: ITag[] = course?.tags || []
 
     const updatedTags = updateTags(courseTag, { tags })
-    await Course.findByIdAndUpdate(courseId, { tags: updatedTags })
+    modifiedData.tags = updatedTags
   }
 
   // Details update dynamically
