@@ -1,7 +1,7 @@
 import { TCategory } from './category.interface'
 import { Category } from './category.model'
 
-// Create a new category into the database
+// Create new category into the database
 const createCategoryIntoDatabase = async (payLoad: TCategory) => {
   const result = await Category.create(payLoad)
   return result
