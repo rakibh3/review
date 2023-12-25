@@ -1,50 +1,37 @@
-import { NextFunction, Request, Response } from 'express'
 import { sendResponse } from '../../utils/sendResponse'
 import httpStatus from 'http-status'
 import { ReviewService } from './review.service'
+import { reviewValidationSchema } from './review.validation'
+import { catchAsync } from '../../utils/catchAsync'
 
 // Create a review for a course
-const createReview = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const { ...review } = req.body
-    const result = await ReviewService.createReviewIntoDatabase(review)
+const createReview = catchAsync(async (req, res) => {
+  const { ...review } = req.body
+  const zodParseReview = reviewValidationSchema.parse(review)
 
-    sendResponse(res, {
-      success: true,
-      message: 'Review created successfully',
-      statusCode: httpStatus.CREATED,
-      data: result,
-    })
-  } catch (error) {
-    next(error)
-  }
-}
+  const result = await ReviewService.createReviewIntoDatabase(zodParseReview)
+
+  sendResponse(res, {
+    success: true,
+    message: 'Review created successfully',
+    statusCode: httpStatus.CREATED,
+    data: result,
+  })
+})
 
 // Get all reviews for a course
-const getAllReviews = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const courseId = req.params.coursesId
-    const result =
-      await ReviewService.getAllReviewsWithCoursesFromDatabase(courseId)
+const getAllReviews = catchAsync(async (req, res) => {
+  const courseId = req.params.coursesId
+  const result =
+    await ReviewService.getAllReviewsWithCoursesFromDatabase(courseId)
 
-    sendResponse(res, {
-      success: true,
-      message: 'Course and Reviews retrieved successfully',
-      statusCode: httpStatus.OK,
-      data: result,
-    })
-  } catch (error) {
-    next(error)
-  }
-}
+  sendResponse(res, {
+    success: true,
+    message: 'Course and Reviews retrieved successfully',
+    statusCode: httpStatus.OK,
+    data: result,
+  })
+})
 
 // Export controllers
 export const ReviewController = {

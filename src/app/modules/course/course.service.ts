@@ -58,13 +58,14 @@ const getBestCoursesFromDatabase = async () => {
 
     { $sort: { averageRating: -1 } },
     { $limit: 1 },
-    {
-      $project: {
-        __v: 0,
-        reviews: 0,
-      },
-    },
+    // {
+    //   $project: {
+    //     __v: 0,
+    //     reviews: 0,
+    //   },
+    // },
   ])
+  console.log('Servies', courses)
   return courses
 }
 

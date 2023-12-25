@@ -1,17 +1,55 @@
-import { NextFunction, Request, Response } from 'express'
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
+import { ErrorRequestHandler } from 'express'
+import { ZodError, ZodIssue } from 'zod'
+import { TErrorDetails } from '../interface/error'
 
-export const globalErrorHandler = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  error: any,
-  req: Request,
-  res: Response,
-
-  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-  next: NextFunction,
+export const globalErrorHandler: ErrorRequestHandler = (
+  error,
+  req,
+  res,
+  next,
 ) => {
-  return res.status(500).json({
+  // Handle Zod Validation Error
+  if (error instanceof ZodError) {
+    const statusCode = 400
+    const message = 'Validation Error'
+
+    const capitalizeFirstLetter = (str: string) => {
+      return str.replace(/\b\w/g, (char) => char.toUpperCase())
+    }
+
+    const errorMessages: TErrorDetails = error.issues.map((issue: ZodIssue) => {
+      const path =
+        issue.path.length > 0 ? issue.path[issue.path.length - 1] : ''
+      return {
+        path: capitalizeFirstLetter(path as string),
+        message: capitalizeFirstLetter(issue.message),
+      }
+    })
+
+    const errorMessage = errorMessages
+      .map((error) => `${error.path} ${error.message}`)
+      .join('. ')
+
+    return res.status(statusCode).json({
+      success: false,
+      message,
+      errorMessage: errorMessage,
+      errorDetails: error,
+      stack: error.stack,
+    })
+  }
+
+  // Handle other errors
+  const statusCode = error.statusCode || 500
+  const message = error.message || 'Something went wrong!'
+
+  return res.status(statusCode).json({
     success: false,
-    message: error.message || 'Something went wrong!',
-    error: error,
+    message,
+    errorMessage: error.message,
+    errorDetails: error,
+    stack: error.stack,
   })
 }
