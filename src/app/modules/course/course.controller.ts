@@ -3,6 +3,7 @@ import { CourseServices } from './course.service'
 import { sendResponse } from '../../utils/sendResponse'
 import httpStatus from 'http-status'
 import { calculateDurationInWeeks } from '../../utils/calculateDurationInWeeks'
+import { courseValidationSchema } from './course.validation'
 
 //  Creates a new course
 const createCourse = async (
@@ -11,17 +12,19 @@ const createCourse = async (
   next: NextFunction,
 ) => {
   try {
+    // const { ...course } = req.body
     const { ...course } = req.body
 
-    // Calculate duration in weeks
+    const zodParsedCourse = courseValidationSchema.parse(course)
+
     const durationInWeeks = calculateDurationInWeeks(
-      course.startDate,
-      course.endDate,
+      zodParsedCourse.startDate,
+      zodParsedCourse.endDate,
     )
 
     const result = await CourseServices.createCourseIntoDatabase({
-      ...course,
-      durationInWeeks,
+      ...zodParsedCourse,
+      durationInWeeks: durationInWeeks,
     })
 
     sendResponse(res, {
