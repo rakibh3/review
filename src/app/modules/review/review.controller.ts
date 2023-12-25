@@ -1,15 +1,13 @@
 import { sendResponse } from '../../utils/sendResponse'
 import httpStatus from 'http-status'
 import { ReviewService } from './review.service'
-import { reviewValidationSchema } from './review.validation'
 import { catchAsync } from '../../utils/catchAsync'
 
 // Create a review for a course
 const createReview = catchAsync(async (req, res) => {
   const { ...review } = req.body
-  const zodParseReview = reviewValidationSchema.parse(review)
 
-  const result = await ReviewService.createReviewIntoDatabase(zodParseReview)
+  const result = await ReviewService.createReviewIntoDatabase(review)
 
   sendResponse(res, {
     success: true,

@@ -2,19 +2,19 @@ import { CourseServices } from './course.service'
 import { sendResponse } from '../../utils/sendResponse'
 import httpStatus from 'http-status'
 import { calculateDurationInWeeks } from '../../utils/calculateDurationInWeeks'
-import { courseValidationSchema } from './course.validation'
 import { catchAsync } from '../../utils/catchAsync'
 
 //  Creates a new course
 const createCourse = catchAsync(async (req, res) => {
   const { ...course } = req.body
-  const zodParsedCourse = courseValidationSchema.parse(course)
+
   const durationInWeeks = calculateDurationInWeeks(
-    zodParsedCourse.startDate,
-    zodParsedCourse.endDate,
+    course.endDate,
+    course.startDate,
   )
+
   const result = await CourseServices.createCourseIntoDatabase({
-    ...zodParsedCourse,
+    ...course,
     durationInWeeks: durationInWeeks,
   })
 

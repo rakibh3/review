@@ -1,8 +1,8 @@
-import dotenv from 'dotenv';
-import path from 'path';
+import dotenv from 'dotenv'
+import path from 'path'
 
 // Load environment variables
-dotenv.config({ path: path.join(process.cwd(), '.env') });
+dotenv.config({ path: path.join(process.cwd(), '.env') })
 
 // Export config from environment
 export default {
@@ -10,4 +10,4 @@ export default {
   port: process.env.PORT,
   // MongoDB connection string
   database_url: process.env.DATABASE_URL,
-};
+}
