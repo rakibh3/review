@@ -7,7 +7,7 @@ import { Course } from './course.model'
 
 // Creates a new course
 const createCourseIntoDatabase = async (payLoad: TCourse) => {
-  const result = (await Course.create(payLoad)).populate('categoryId')
+  const result = await Course.create(payLoad)
   return result
 }
 
