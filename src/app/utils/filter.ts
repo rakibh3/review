@@ -25,14 +25,6 @@ export const filterByUtils = (query: any) => {
     }
   }
 
-  if (query.tags) {
-    filter.tags = {
-      $elemMatch: {
-        name: query.tags,
-      },
-    }
-  }
-
   if (endDate) {
     filter.endDate = {
       $lte: endDate.toISOString().slice(0, 10),
@@ -46,19 +38,31 @@ export const filterByUtils = (query: any) => {
   }
 
   if (language) {
-    filter.language = language
+    const lowercaseLanguage = language.toLowerCase()
+    filter.language = lowercaseLanguage
   }
 
   if (provider) {
-    filter.provider = provider
+    const lowercaseProvider = provider.toLowerCase()
+    filter.provider = lowercaseProvider
   }
 
   if (durationInWeeks) {
     filter.durationInWeeks = durationInWeeks
   }
 
+  if (query.tags) {
+    const lowercaseTags = query.tags.toLowerCase()
+    filter.tags = {
+      $elemMatch: {
+        name: lowercaseTags,
+      },
+    }
+  }
+
   if (level) {
-    filter.level = level
+    const lowercaseLevel = level.toLowerCase()
+    filter['details.level'] = lowercaseLevel
   }
 
   return filter

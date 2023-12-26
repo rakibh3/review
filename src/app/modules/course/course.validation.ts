@@ -11,7 +11,7 @@ const detailsValidationSchema = z.object({
   description: z.string(),
 })
 
-export const courseValidationSchema = z.object({
+export const courseCreateValidationSchema = z.object({
   title: z.string(),
   instructor: z.string(),
   categoryId: z.string(),
@@ -25,5 +25,16 @@ export const courseValidationSchema = z.object({
   details: detailsValidationSchema,
 })
 
-// const parsedCourse = CourseSchema.parse(exampleCourseData);
-// If the data doesn't conform to the schema, Zod will throw an error
+export const courseUpdateValidationSchema = z.object({
+  title: z.string().optional(),
+  instructor: z.string().optional(),
+  categoryId: z.string().optional(),
+  price: z.number().min(0).optional(),
+  tags: z.array(tagvalidationSchema).optional(),
+  startDate: z.string().optional(),
+  endDate: z.string().optional(),
+  language: z.string().optional(),
+  provider: z.string().optional(),
+  durationInWeeks: z.number().optional(),
+  details: detailsValidationSchema.optional(),
+})

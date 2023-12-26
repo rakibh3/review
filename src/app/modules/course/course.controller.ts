@@ -9,13 +9,13 @@ const createCourse = catchAsync(async (req, res) => {
   const { ...course } = req.body
 
   const durationInWeeks = calculateDurationInWeeks(
-    course.endDate,
     course.startDate,
+    course.endDate,
   )
 
   const result = await CourseServices.createCourseIntoDatabase({
     ...course,
-    durationInWeeks: durationInWeeks,
+    durationInWeeks,
   })
 
   sendResponse(res, {

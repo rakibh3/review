@@ -26,10 +26,12 @@ const getAllCourseFromDatabase = async (query: Record<string, any>) => {
     .skip((page - 1) * limit)
     .limit(limit)
 
+  const totalFilteredCourses = await Course.countDocuments(filterBy)
+
   const metaData = {
     page,
     limit,
-    total: await Course.countDocuments(),
+    total: totalFilteredCourses,
   }
 
   return {

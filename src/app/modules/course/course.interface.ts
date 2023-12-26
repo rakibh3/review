@@ -1,5 +1,3 @@
-// import { Types } from 'mongoose'
-
 export type TTag = {
   name: string
   isDeleted: boolean
@@ -13,7 +11,6 @@ export type TDetails = {
 export type TCourse = {
   title: string
   instructor: string
-  // categoryId: Types.ObjectId
   categoryId: string
   price: number
   tags: Array<TTag>
