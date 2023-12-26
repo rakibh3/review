@@ -7,7 +7,7 @@ Step-by-step instructions on how to install the application.
 - Clone the repository:
 
 ```
-git clone git@github.com:Porgramming-Hero-web-course l2b2a3-course-review-rakibh3.git
+git clone git@github.com:Porgramming-Hero-web-course/l2b2a3-course-review-rakibh3.git
 ```
 
 - Navigate to the project directory:
